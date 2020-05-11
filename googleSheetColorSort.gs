@@ -16,7 +16,7 @@ const appTitle = "Google Sheet Color Sort";
 const alertHeaderMsg = "Does this Google Sheet have a header?";
 
 
-function onOpen(e) {
+function onOpen() {
     Ui.createMenu("Google Sheet Color Sort")
         .addItem("Sort Rows by Color", "showSortPrompt")
         .addItem("Add Sorting Column", "showColumnPrompt")
