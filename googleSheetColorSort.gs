@@ -28,7 +28,7 @@ function onOpen(e) {
 
 
 function showSortPrompt() {
-    // Used to pass parameters that automatically sort the entire Sheet
+    // Used to pass arguments to colorSort that automatically sort the entire Sheet
     const response = Ui.alert(appTitle, alertHeaderMsg, Ui.ButtonSet.YES_NO);
     const activeSheet = SpreadsheetApp.getActiveSheet();
 
@@ -43,7 +43,7 @@ function showSortPrompt() {
 
 
 function showColumnPrompt() {
-    // Used to pass parameters that add a sorting column for manual sorting
+    // Used to pass arguments to colorSort that add a sorting column for manual sorting
     const response = Ui.alert(appTitle, alertHeaderMsg, Ui.ButtonSet.YES_NO);
     const activeSheet = SpreadsheetApp.getActiveSheet();
 
