@@ -71,15 +71,15 @@ function colorSort(hasHeader, sortRows, sheet) {
         if (!sortRows) {
             sheet.getRange(1, sortColumn).setValue("Sort Column");
         }
-    } else {
+    } else { // No header
         startRow = 1;
         numRows = lastRow;
     }
 
-    // The background fill color of first cell in each row of the first
-    // column is used to identify the entire row's background fill color
-    let hexRange = sheet.getRange(startRow, sortColumn, numRows);
-    let backgrounds = sheet.getRange(startRow, 1, numRows).getBackgrounds();
+    // Hexadecimal color codes of data range in first column
+    const backgrounds = sheet.getRange(startRow, 1, numRows).getBackgrounds();
+    // Column range in which to place hexadecimal color codes for sorting
+    const hexRange = sheet.getRange(startRow, sortColumn, numRows);
     hexRange.setValues(backgrounds);
 
     if (sortRows) {
