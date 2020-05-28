@@ -1,6 +1,6 @@
 /*
    Google Sheet-bound script that assists with sorting
-   Google Sheet rows by background fill color
+   Google Sheet rows by selected column's background fill color.
 
    License: MIT (c) 2020 Jordan Bradford
    GitHub: jrdnbradford
@@ -18,8 +18,8 @@ const alertHeaderMsg = "Does this Google Sheet have a header?";
 
 function onOpen() {
     Ui.createMenu("Google Sheet Color Sort")
-        .addItem("Sort Rows by Color", "showSortPrompt")
-        .addItem("Add Sorting Column", "showColumnPrompt")
+        .addItem("Sort Rows by Color", "sortRowByColorPrompt")
+        .addItem("Add Sorting Column", "addSortingColumnPrompt")
         .addToUi();
 
     activeSpreadsheet
@@ -27,7 +27,7 @@ function onOpen() {
 }
 
 
-function showSortPrompt() {
+function sortRowByColorPrompt() {
     // Used to pass arguments to colorSort that automatically sort the entire Sheet
     const response = Ui.alert(appTitle, alertHeaderMsg, Ui.ButtonSet.YES_NO);
     const activeSheet = SpreadsheetApp.getActiveSheet();
@@ -42,7 +42,7 @@ function showSortPrompt() {
 }
 
 
-function showColumnPrompt() {
+function addSortingColumnPrompt() {
     // Used to pass arguments to colorSort that add a sorting column for manual sorting
     const response = Ui.alert(appTitle, alertHeaderMsg, Ui.ButtonSet.YES_NO);
     const activeSheet = SpreadsheetApp.getActiveSheet();
@@ -59,8 +59,12 @@ function showColumnPrompt() {
 
 function colorSort(hasHeader, sortRows, sheet) {
     const lastRow = sheet.getLastRow();
+    const selectedColumn = sheet.getCurrentCell().getColumn();
     const sortColumn = sheet.getLastColumn() + 1;
-    sheet.hideColumns(sortColumn);
+
+    if (sortRows) { // Hide use of hex color codes
+        sheet.hideColumns(sortColumn);
+    }
 
     let startRow;
     let numRows;
@@ -68,24 +72,24 @@ function colorSort(hasHeader, sortRows, sheet) {
         startRow = 2;
         numRows = lastRow - 1;
         sheet.setFrozenRows(1);
-        if (!sortRows) {
-            sheet.getRange(1, sortColumn).setValue("Sort Column");
-        }
     } else { // No header
         startRow = 1;
         numRows = lastRow;
     }
 
-    // Hexadecimal color codes of data range in first column
-    const backgrounds = sheet.getRange(startRow, 1, numRows).getBackgrounds();
-    // Column range in which to place hexadecimal color codes for sorting
-    const hexRange = sheet.getRange(startRow, sortColumn, numRows);
-    hexRange.setValues(backgrounds);
+    // Hex color codes of data range in first column
+    const columnRangeBackgrounds = sheet.getRange(startRow, selectedColumn, numRows).getBackgrounds();
+    // Column range in which to place hex color codes for sorting
+    const hexColumnRange = sheet.getRange(startRow, sortColumn, numRows);
+    hexColumnRange.setValues(columnRangeBackgrounds);
 
     if (sortRows) {
         sheet.sort(sortColumn);
-        hexRange.clear({contentsOnly: true});
+        hexColumnRange.clear({contentsOnly: true});
+        sheet.showColumns(sortColumn);
+    } else {
+        if (hasHeader) {
+            sheet.getRange(1, sortColumn).setValue("Sort Column");
+        }
     }
-
-    sheet.showColumns(sortColumn);
 }
