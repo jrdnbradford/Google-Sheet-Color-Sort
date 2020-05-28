@@ -2,9 +2,9 @@
 Google Sheet-bound script that assists with sorting Google Sheet rows by background fill color.
 
 ## Using the Script
-In your Google Sheet select **Tools** -> **Script editor**. Remove the default code, paste in the contents of this [script](googleSheetColorSort.gs), save, and enter a project title of your choice.
+In your Google Sheet select **Tools** -> **Script editor**. Remove the default code, paste in the contents of this [script](googleSheetColorSort.gs), save, and enter a project title of your choice. Close the script editor and go back to your Sheet.
 
-Reload the Sheet and click **Google Sheet Color Sort** in the menu bar. Authorize the application using your Google account (this must only be done once). Once authorized you must click **Google Sheet Color Sort** again to see your sorting options.
+Refresh the Sheet, click **Google Sheet Color Sort** in the menu bar, and click any of the submenu items. Then authorize the application using your Google account (this must only be done once). Once authorized you must click **Google Sheet Color Sort** again to see your sorting options.
 
 Use the **Sort Rows by Color** submenu item to automatically sort the entire Google Sheet by each row's background fill color. 
 
